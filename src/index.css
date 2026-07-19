@@ -1,0 +1,10 @@
+/* Global styles are added in Phase 2. Keep this minimal for now. */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
