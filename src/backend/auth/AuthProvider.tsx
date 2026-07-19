@@ -9,7 +9,7 @@ export interface AuthContextValue {
   user: User | null
   profile: Profile | null
   loading: boolean
-  signUp: (email: string, password: string) => Promise<void>
+  signUp: (email: string, password: string) => Promise<{ user: User | null; session: Session | null }>
   signIn: (email: string, password: string) => Promise<void>
   signOut: () => Promise<void>
   refreshProfile: () => Promise<void>
@@ -106,7 +106,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const signUp = useCallback(async (email: string, password: string) => {
-    await signUpWithPassword(email, password)
+    return await signUpWithPassword(email, password)
   }, [])
 
   const signOut = useCallback(async () => {

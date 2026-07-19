@@ -34,3 +34,21 @@ export async function getProfile(userId: string): Promise<Profile | null> {
   if (error) throw error
   return data
 }
+
+export interface ProfileUpdateInput {
+  full_name: string
+  country: string
+  bio?: string | null
+}
+
+/** Updates the current user profile and returns the saved row. */
+export async function updateProfile(userId: string, fields: ProfileUpdateInput): Promise<Profile> {
+  const { data, error } = await supabase
+    .from('profiles')
+    .update(fields)
+    .eq('id', userId)
+    .select('*')
+    .single()
+  if (error) throw error
+  return data
+}

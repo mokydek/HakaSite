@@ -2,6 +2,8 @@ import { lazy, Suspense } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { AuthProvider } from './backend/auth/AuthProvider'
 import { ProtectedRoute } from './backend/auth/ProtectedRoute'
+import { RequireProfile } from './backend/auth/RequireProfile'
+import { RequireRegistration } from './backend/auth/RequireRegistration'
 import { RequireRole } from './backend/auth/RequireRole'
 import { AppLayout } from './frontend/components/AppLayout'
 import { Spinner } from './ui'
@@ -39,15 +41,25 @@ export default function App() {
           {/* Authenticated, inside the app shell */}
           <Route element={<ProtectedRoute />}>
             <Route element={<AppLayout />}>
+              {/* Reachable with an incomplete profile so onboarding can be finished */}
               <Route path="/onboarding" element={<Onboarding />} />
-              <Route path="/hackathon" element={<Hackathon />} />
-              <Route path="/hackathon/cases/:caseId" element={<CaseDetail />} />
-              <Route path="/team" element={<Team />} />
-              <Route path="/submit" element={<Submit />} />
 
-              {/* Organizer only */}
-              <Route element={<RequireRole role="organizer" />}>
-                <Route path="/admin" element={<Admin />} />
+              {/* Everything below requires a complete profile */}
+              <Route element={<RequireProfile />}>
+                {/* Registration happens here */}
+                <Route path="/hackathon" element={<Hackathon />} />
+
+                {/* These require an active registration */}
+                <Route element={<RequireRegistration />}>
+                  <Route path="/hackathon/cases/:caseId" element={<CaseDetail />} />
+                  <Route path="/team" element={<Team />} />
+                  <Route path="/submit" element={<Submit />} />
+                </Route>
+
+                {/* Organizer only */}
+                <Route element={<RequireRole role="organizer" />}>
+                  <Route path="/admin" element={<Admin />} />
+                </Route>
               </Route>
             </Route>
           </Route>
