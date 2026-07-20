@@ -345,6 +345,34 @@ export interface Database {
         Args: { t: string }
         Returns: boolean
       }
+      create_team: {
+        Args: { p_hackathon_id: string; p_name: string }
+        Returns: Database['public']['Tables']['teams']['Row']
+      }
+      join_team_by_code: {
+        Args: { p_code: string }
+        Returns: Database['public']['Tables']['teams']['Row']
+      }
+      join_team_by_id: {
+        Args: { p_team_id: string }
+        Returns: Database['public']['Tables']['teams']['Row']
+      }
+      leave_team: {
+        Args: { p_team_id: string }
+        Returns: undefined
+      }
+      delete_team: {
+        Args: { p_team_id: string }
+        Returns: undefined
+      }
+      remove_member: {
+        Args: { p_team_id: string; p_profile_id: string }
+        Returns: undefined
+      }
+      get_open_teams: {
+        Args: { p_hackathon_id: string }
+        Returns: { id: string; name: string; member_count: number; looking_for_members: boolean }[]
+      }
     }
     Enums: {
       [_ in never]: never

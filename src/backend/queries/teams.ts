@@ -68,3 +68,76 @@ export async function getMyTeam(hackathonId: string): Promise<TeamWithMembers | 
     })),
   }
 }
+
+export interface OpenTeam {
+  id: string
+  name: string
+  member_count: number
+  looking_for_members: boolean
+}
+
+/**
+ * Thin wrappers over the SECURITY DEFINER team functions. Every mutation goes
+ * through an RPC, whose raised message is surfaced to the caller. The only
+ * direct write is updateTeam, allowed by the owner update policy.
+ */
+
+export async function createTeam(hackathonId: string, name: string): Promise<Team> {
+  const { data, error } = await supabase.rpc('create_team', {
+    p_hackathon_id: hackathonId,
+    p_name: name,
+  })
+  if (error) throw new Error(error.message)
+  return data
+}
+
+export async function joinTeamByCode(code: string): Promise<Team> {
+  const { data, error } = await supabase.rpc('join_team_by_code', { p_code: code })
+  if (error) throw new Error(error.message)
+  return data
+}
+
+export async function joinTeamById(teamId: string): Promise<Team> {
+  const { data, error } = await supabase.rpc('join_team_by_id', { p_team_id: teamId })
+  if (error) throw new Error(error.message)
+  return data
+}
+
+export async function leaveTeam(teamId: string): Promise<void> {
+  const { error } = await supabase.rpc('leave_team', { p_team_id: teamId })
+  if (error) throw new Error(error.message)
+}
+
+export async function deleteTeam(teamId: string): Promise<void> {
+  const { error } = await supabase.rpc('delete_team', { p_team_id: teamId })
+  if (error) throw new Error(error.message)
+}
+
+export async function removeMember(teamId: string, profileId: string): Promise<void> {
+  const { error } = await supabase.rpc('remove_member', {
+    p_team_id: teamId,
+    p_profile_id: profileId,
+  })
+  if (error) throw new Error(error.message)
+}
+
+export async function getOpenTeams(hackathonId: string): Promise<OpenTeam[]> {
+  const { data, error } = await supabase.rpc('get_open_teams', { p_hackathon_id: hackathonId })
+  if (error) throw new Error(error.message)
+  return data ?? []
+}
+
+/** Owner only rename and looking_for_members toggle via a normal update. */
+export async function updateTeam(
+  teamId: string,
+  fields: { name?: string; looking_for_members?: boolean },
+): Promise<Team> {
+  const { data, error } = await supabase
+    .from('teams')
+    .update(fields)
+    .eq('id', teamId)
+    .select('*')
+    .single()
+  if (error) throw new Error(error.message)
+  return data
+}
