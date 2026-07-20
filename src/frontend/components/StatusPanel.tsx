@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import { Badge, Card, Spinner } from '../../ui'
 import { getMyTeam, type TeamWithMembers } from '../../backend/queries/teams'
+import { getMyTeamSubmission } from '../../backend/queries/submissions'
 
 export function StatusPanel({ hackathonId }: { hackathonId: string }) {
   const [team, setTeam] = useState<TeamWithMembers | null>(null)
+  const [hasSubmission, setHasSubmission] = useState(false)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -13,16 +15,22 @@ export function StatusPanel({ hackathonId }: { hackathonId: string }) {
     let active = true
     setLoading(true)
     setError(null)
-    getMyTeam(hackathonId)
-      .then((row) => {
-        if (active) setTeam(row)
-      })
-      .catch(() => {
+    setHasSubmission(false)
+    void (async () => {
+      try {
+        const row = await getMyTeam(hackathonId)
+        if (!active) return
+        setTeam(row)
+        if (row) {
+          const submission = await getMyTeamSubmission(hackathonId, row.id).catch(() => null)
+          if (active) setHasSubmission(submission !== null)
+        }
+      } catch {
         if (active) setError('Could not load your team')
-      })
-      .finally(() => {
+      } finally {
         if (active) setLoading(false)
-      })
+      }
+    })()
     return () => {
       active = false
     }
@@ -73,13 +81,24 @@ export function StatusPanel({ hackathonId }: { hackathonId: string }) {
 
       <div className="flex flex-col gap-2 border-t border-border pt-4">
         <span className="text-sm font-medium text-foreground">Submission</span>
-        <Link
-          to="/submit"
-          className="inline-flex items-center gap-1 text-sm font-medium text-accent"
-        >
-          Open submission
-          <ArrowRight size={16} strokeWidth={2} aria-hidden="true" />
-        </Link>
+        {loading ? (
+          <Spinner size={16} />
+        ) : !team ? (
+          <span className="text-sm text-muted">Join a team to submit.</span>
+        ) : (
+          <div className="flex flex-col gap-2">
+            <span className="text-sm text-muted">
+              {hasSubmission ? 'Submitted' : 'Not submitted yet'}
+            </span>
+            <Link
+              to="/submit"
+              className="inline-flex items-center gap-1 text-sm font-medium text-accent"
+            >
+              {hasSubmission ? 'Edit submission' : 'Start submission'}
+              <ArrowRight size={16} strokeWidth={2} aria-hidden="true" />
+            </Link>
+          </div>
+        )}
       </div>
     </Card>
   )

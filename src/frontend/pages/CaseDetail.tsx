@@ -136,7 +136,7 @@ export default function CaseDetail() {
       ) : null}
 
       <div className="border-t border-border pt-6">
-        <Button onClick={() => navigate('/submit')}>Submit for this case</Button>
+        <Button onClick={() => navigate(`/submit?case=${caseRow.id}`)}>Submit for this case</Button>
       </div>
     </article>
   )
