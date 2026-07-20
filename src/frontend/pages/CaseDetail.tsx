@@ -6,6 +6,7 @@ import { Markdown } from '../components/Markdown'
 import { getCaseById } from '../../backend/queries/cases'
 import { getPublishedHackathon } from '../../backend/queries/hackathon'
 import type { Case, Json } from '../../backend/types'
+import { usePageTitle } from '../hooks/usePageTitle'
 
 interface Attachment {
   name: string
@@ -37,6 +38,8 @@ export default function CaseDetail() {
   const [revealAt, setRevealAt] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+
+  usePageTitle(caseRow?.title ?? 'Case')
 
   useEffect(() => {
     let active = true

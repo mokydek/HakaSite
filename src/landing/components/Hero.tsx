@@ -48,7 +48,11 @@ export function Hero({ hackathon, isLoggedIn }: HeroProps) {
 
         {hackathon.cover_url ? (
           <div className="mt-8 overflow-hidden rounded border border-border">
-            <img src={hackathon.cover_url} alt="" className="block w-full" />
+            <img
+              src={hackathon.cover_url}
+              alt={`Cover image for ${hackathon.title}`}
+              className="block w-full"
+            />
           </div>
         ) : null}
       </div>

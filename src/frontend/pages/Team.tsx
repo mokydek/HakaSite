@@ -7,8 +7,10 @@ import { getMyTeam, type TeamWithMembers } from '../../backend/queries/teams'
 import type { Hackathon } from '../../backend/types'
 import { CreateJoinTeam } from '../components/CreateJoinTeam'
 import { TeamPanel } from '../components/TeamPanel'
+import { usePageTitle } from '../hooks/usePageTitle'
 
 export default function Team() {
+  usePageTitle('Team')
   const { user } = useAuth()
 
   const [hackathon, setHackathon] = useState<Hackathon | null>(null)

@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Button, Container, Input, PageHeader } from '../../ui'
 import { FormError } from '../components/FormError'
 import { useAuth } from '../../backend/auth/useAuth'
+import { usePageTitle } from '../hooks/usePageTitle'
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -16,6 +17,7 @@ interface FromState {
 }
 
 export default function SignIn() {
+  usePageTitle('Sign in')
   const { signIn } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()

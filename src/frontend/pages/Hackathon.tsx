@@ -12,8 +12,10 @@ import { ScheduleList } from '../components/ScheduleList'
 import { StatusPanel } from '../components/StatusPanel'
 import { KeyDatesPanel } from '../components/KeyDatesPanel'
 import { RegisterCta } from '../components/RegisterCta'
+import { usePageTitle } from '../hooks/usePageTitle'
 
 export default function Hackathon() {
+  usePageTitle('Dashboard')
   const [hackathon, setHackathon] = useState<HackathonRow | null>(null)
   const [registration, setRegistration] = useState<Registration | null>(null)
   const [loading, setLoading] = useState(true)

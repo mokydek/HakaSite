@@ -10,11 +10,13 @@ import { KeyDates } from './components/KeyDates'
 import { Prizes } from './components/Prizes'
 import { About } from './components/About'
 import { PublicFooter } from './components/PublicFooter'
+import { usePageTitle } from '../frontend/hooks/usePageTitle'
 
 const PRODUCT_NAME = 'Hackathon platform'
 
 /** Public, anonymous landing page at the / route. */
 export default function LandingPage() {
+  usePageTitle()
   const { session } = useAuth()
   const isLoggedIn = Boolean(session)
 

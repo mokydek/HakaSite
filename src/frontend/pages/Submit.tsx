@@ -9,6 +9,7 @@ import { getPublishedHackathon } from '../../backend/queries/hackathon'
 import { getMyTeam, type TeamWithMembers } from '../../backend/queries/teams'
 import { getMyTeamSubmission, upsertSubmission } from '../../backend/queries/submissions'
 import type { Case, Hackathon, Json, Submission } from '../../backend/types'
+import { usePageTitle } from '../hooks/usePageTitle'
 
 interface LinkItem {
   id: string
@@ -39,6 +40,7 @@ function parseLinks(value: Json): LinkItem[] {
 }
 
 export default function Submit() {
+  usePageTitle('Submission')
   const [searchParams] = useSearchParams()
   const location = useLocation()
 

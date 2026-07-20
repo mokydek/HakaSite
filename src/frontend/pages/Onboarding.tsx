@@ -5,6 +5,7 @@ import { FormError } from '../components/FormError'
 import { COUNTRIES } from '../data/countries'
 import { updateProfile } from '../../backend/queries/auth'
 import { useAuth } from '../../backend/auth/useAuth'
+import { usePageTitle } from '../hooks/usePageTitle'
 
 interface FieldErrors {
   fullName?: string
@@ -12,6 +13,7 @@ interface FieldErrors {
 }
 
 export default function Onboarding() {
+  usePageTitle('Onboarding')
   const { user, profile, refreshProfile } = useAuth()
   const navigate = useNavigate()
 

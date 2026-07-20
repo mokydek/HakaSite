@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom'
 import { Container, PageHeader } from '../../ui'
+import { usePageTitle } from '../hooks/usePageTitle'
 
 /** Catch all not found page. */
 export default function NotFound() {
+  usePageTitle('Page not found')
   return (
     <Container className="py-16">
       <PageHeader

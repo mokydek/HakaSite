@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Button, Container, Input, PageHeader } from '../../ui'
 import { FormError } from '../components/FormError'
 import { useAuth } from '../../backend/auth/useAuth'
+import { usePageTitle } from '../hooks/usePageTitle'
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -13,6 +14,7 @@ interface FieldErrors {
 }
 
 export default function SignUp() {
+  usePageTitle('Create account')
   const { signUp } = useAuth()
   const navigate = useNavigate()
 
