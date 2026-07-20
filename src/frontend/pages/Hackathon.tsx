@@ -6,8 +6,7 @@ import { getPublishedHackathon } from '../../backend/queries/hackathon'
 import { getMyRegistration } from '../../backend/queries/registrations'
 import type { Hackathon as HackathonRow, Registration } from '../../backend/types'
 import { HackathonHeader } from '../components/HackathonHeader'
-import { RevealCountdown } from '../components/RevealCountdown'
-import { CasesShell } from '../components/CasesShell'
+import { CasesSection } from '../components/CasesSection'
 import { AnnouncementsFeed } from '../components/AnnouncementsFeed'
 import { ScheduleList } from '../components/ScheduleList'
 import { StatusPanel } from '../components/StatusPanel'
@@ -19,7 +18,6 @@ export default function Hackathon() {
   const [registration, setRegistration] = useState<Registration | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [countdownDone, setCountdownDone] = useState(false)
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -38,13 +36,6 @@ export default function Hackathon() {
   useEffect(() => {
     void load()
   }, [load])
-
-  // Revealed if the reveal time has already passed on load, or once the live
-  // countdown reaches zero. This flips the cases area without a manual refresh.
-  const revealPassed = hackathon?.cases_reveal_at
-    ? new Date(hackathon.cases_reveal_at).getTime() <= Date.now()
-    : false
-  const revealed = revealPassed || countdownDone
 
   if (loading) {
     return (
@@ -83,13 +74,7 @@ export default function Hackathon() {
     <div className="grid gap-8 lg:grid-cols-3">
       <div className="flex flex-col gap-8 lg:col-span-2">
         <HackathonHeader hackathon={hackathon} />
-        {!revealed && hackathon.cases_reveal_at ? (
-          <RevealCountdown
-            target={hackathon.cases_reveal_at}
-            onComplete={() => setCountdownDone(true)}
-          />
-        ) : null}
-        <CasesShell revealed={revealed} revealAt={hackathon.cases_reveal_at} />
+        <CasesSection hackathonId={hackathon.id} revealAt={hackathon.cases_reveal_at} />
         <AnnouncementsFeed hackathonId={hackathon.id} />
         <ScheduleList hackathonId={hackathon.id} />
       </div>
