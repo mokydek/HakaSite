@@ -373,6 +373,30 @@ export interface Database {
         Args: { p_hackathon_id: string }
         Returns: { id: string; name: string; member_count: number; looking_for_members: boolean }[]
       }
+      get_registrations: {
+        Args: { p_hackathon_id: string }
+        Returns: {
+          profile_id: string
+          full_name: string | null
+          country: string | null
+          email: string | null
+          team_name: string | null
+          registered_at: string
+        }[]
+      }
+      get_submissions: {
+        Args: { p_hackathon_id: string }
+        Returns: {
+          team_name: string
+          case_title: string | null
+          repo_url: string | null
+          demo_url: string | null
+          description: string | null
+          files: Json
+          submitted_by_name: string | null
+          updated_at: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
