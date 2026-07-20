@@ -1,52 +1,48 @@
-import { Send, Unlock, UserPlus, Users, type LucideIcon } from 'lucide-react'
-import { Card } from '../../ui'
-
-interface Step {
-  icon: LucideIcon
-  label: string
-  text: string
-}
-
-const STEPS: Step[] = [
+const STEPS = [
   {
-    icon: UserPlus,
-    label: 'Register',
-    text: 'Sign up and register for the hackathon in a minute.',
+    title: 'Pick a track',
+    desc: 'Choose from six tracks that match your skills, or jump into something new.',
   },
   {
-    icon: Users,
-    label: 'Form a team or go solo',
-    text: 'Build a team or compete on your own as a team of one.',
+    title: 'Register and team up',
+    desc: 'Sign up solo or with a squad. We help you find teammates when you need them.',
   },
   {
-    icon: Unlock,
-    label: 'Cases unlock',
-    text: 'The challenge prompts appear at the set reveal time.',
+    title: 'Build for 48 hours',
+    desc: 'Get the prompt, then design, code, and ship a working prototype against the clock.',
   },
   {
-    icon: Send,
-    label: 'Submit',
-    text: 'Ship your project before the deadline.',
+    title: 'Submit and win',
+    desc: 'Present to the judges. Winners take the prize pool and the spotlight.',
   },
 ]
 
 export function HowItWorks() {
   return (
-    <section className="mx-auto max-w-5xl px-6 py-16">
-      <h2 className="font-display text-2xl font-semibold tracking-tight text-foreground">
-        How it works
-      </h2>
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {STEPS.map((step) => {
-          const Icon = step.icon
-          return (
-            <Card key={step.label} className="flex flex-col gap-3">
-              <Icon size={20} strokeWidth={2} aria-hidden="true" className="text-foreground" />
-              <h3 className="font-display text-base font-semibold text-foreground">{step.label}</h3>
-              <p className="text-sm text-muted">{step.text}</p>
-            </Card>
-          )
-        })}
+    <section id="how" className="border-b border-border">
+      <div className="mx-auto max-w-6xl px-6 py-20 md:py-24">
+        <div className="mb-12">
+          <p className="mb-3 font-mono text-xs uppercase tracking-widest text-accent">
+            How it works
+          </p>
+          <h2 className="max-w-lg font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+            From idea to demo in one weekend.
+          </h2>
+        </div>
+
+        <ol className="grid gap-px overflow-hidden rounded border border-border bg-border md:grid-cols-2 lg:grid-cols-4">
+          {STEPS.map((step, index) => (
+            <li key={step.title} className="flex flex-col gap-4 bg-background p-8">
+              <span className="font-mono text-sm font-semibold text-accent">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <h3 className="font-display text-lg font-semibold text-foreground">
+                {step.title}
+              </h3>
+              <p className="text-sm leading-relaxed text-muted">{step.desc}</p>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   )

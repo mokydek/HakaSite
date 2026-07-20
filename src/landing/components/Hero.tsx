@@ -1,60 +1,71 @@
-import { Link, useNavigate } from 'react-router-dom'
-import { Button, Countdown } from '../../ui'
-import type { Hackathon } from '../../backend/types'
-import { formatDateShort, isFuture } from '../format'
+import { useNavigate } from 'react-router-dom'
+import { ArrowRight } from 'lucide-react'
+import { Button } from '../../ui'
+import { HeroArt } from './HeroArt'
 
 interface HeroProps {
-  hackathon: Hackathon
   isLoggedIn: boolean
 }
 
-export function Hero({ hackathon, isLoggedIn }: HeroProps) {
+const HERO_STATS = [
+  { value: '12K+', label: 'Builders' },
+  { value: '240', label: 'Hackathons' },
+  { value: '$2.4M', label: 'In prizes' },
+]
+
+export function Hero({ isLoggedIn }: HeroProps) {
   const navigate = useNavigate()
-  const kickerDate = hackathon.start_at ?? hackathon.registration_deadline
-  const showCountdown = isFuture(hackathon.start_at)
 
   return (
-    <section className="mx-auto max-w-5xl px-6 py-16 sm:py-24">
-      <div className="flex flex-col gap-6">
-        <p className="font-mono text-xs uppercase tracking-widest text-muted sm:text-sm">
-          {kickerDate ? `Starts ${formatDateShort(kickerDate)}` : 'Dates to be announced'}
-        </p>
+    <section id="top" className="border-b border-border">
+      <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-20 md:py-28 lg:grid-cols-2">
+        <div>
+          <p className="mb-6 inline-flex items-center gap-2 rounded border border-border px-3 py-1 font-mono text-xs uppercase tracking-widest text-muted">
+            <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+            Global online hackathons
+          </p>
 
-        <h1 className="max-w-3xl font-display text-4xl font-semibold leading-tight tracking-tight text-foreground sm:text-5xl">
-          {hackathon.title}
-        </h1>
+          <h1 className="font-display text-5xl font-semibold leading-[1.02] tracking-tight text-foreground sm:text-6xl">
+            Build something
+            <br />
+            <span className="text-accent">worth shipping.</span>
+          </h1>
 
-        {hackathon.description ? (
-          <p className="max-w-2xl text-base text-muted sm:text-lg">{hackathon.description}</p>
-        ) : null}
+          <p className="mt-6 max-w-md text-lg leading-relaxed text-muted">
+            Pick a track, team up with builders worldwide, and turn a weekend
+            into a real product. Register once and join every event.
+          </p>
 
-        <div className="mt-2 flex flex-wrap items-center gap-x-6 gap-y-3">
-          <Button onClick={() => navigate(isLoggedIn ? '/hackathon' : '/signup')}>
-            {isLoggedIn ? 'Go to hackathon' : 'Sign up'}
-          </Button>
-          {!isLoggedIn ? (
-            <Link to="/signin" className="text-sm font-medium text-foreground hover:text-muted">
-              Sign in
-            </Link>
-          ) : null}
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <Button size="md" onClick={() => navigate(isLoggedIn ? '/hackathon' : '/signup')}>
+              {isLoggedIn ? 'Go to hackathon' : 'Register now'}
+              <ArrowRight size={16} strokeWidth={2.5} />
+            </Button>
+            <a
+              href="#tracks"
+              className="inline-flex h-10 items-center justify-center gap-2 rounded border border-border px-4 text-sm font-medium text-foreground transition-colors hover:border-foreground"
+            >
+              Explore tracks
+            </a>
+          </div>
+
+          <dl className="mt-12 grid max-w-md grid-cols-3 gap-6">
+            {HERO_STATS.map((stat) => (
+              <div key={stat.label}>
+                <dt className="font-mono text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+                  {stat.value}
+                </dt>
+                <dd className="mt-1 text-xs uppercase tracking-widest text-muted">
+                  {stat.label}
+                </dd>
+              </div>
+            ))}
+          </dl>
         </div>
 
-        {showCountdown && hackathon.start_at ? (
-          <div className="mt-6">
-            <p className="mb-3 font-mono text-xs uppercase tracking-widest text-muted">Starts in</p>
-            <Countdown target={hackathon.start_at} />
-          </div>
-        ) : null}
-
-        {hackathon.cover_url ? (
-          <div className="mt-8 overflow-hidden rounded border border-border">
-            <img
-              src={hackathon.cover_url}
-              alt={`Cover image for ${hackathon.title}`}
-              className="block w-full"
-            />
-          </div>
-        ) : null}
+        <div className="hidden lg:block">
+          <HeroArt className="w-full" />
+        </div>
       </div>
     </section>
   )

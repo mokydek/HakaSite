@@ -11,8 +11,9 @@ import type { Config } from 'tailwindcss'
  */
 const config: Config = {
   content: ['./index.html', './src/**/*.{ts,tsx}'],
-  // No dark mode, ever. There are zero dark variants and the class trigger is
-  // never applied, so the app is permanently light.
+  // Dark mode is driven by a `.dark` class on <html>, toggled by the
+  // ThemeProvider. Every color below resolves to a CSS variable that flips
+  // between the light (:root) and dark (.dark) values in styles/index.css.
   darkMode: 'class',
   theme: {
     // Replace the palette entirely so only on brand colors can be used.
@@ -21,14 +22,14 @@ const config: Config = {
       current: 'currentColor',
       inherit: 'inherit',
       white: '#FFFFFF',
-      background: '#FFFFFF',
-      foreground: '#0A0A0A',
-      muted: '#666666',
-      border: '#EAEAEA',
-      surface: '#FAFAFA',
+      background: 'var(--background)',
+      foreground: 'var(--foreground)',
+      muted: 'var(--muted)',
+      border: 'var(--border)',
+      surface: 'var(--surface)',
       accent: {
         DEFAULT: 'var(--accent)',
-        foreground: '#FFFFFF',
+        foreground: 'var(--accent-foreground)',
       },
     },
     // Replace the radius scale so no token exceeds 2px. full stays available

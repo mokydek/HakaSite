@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button, Container, Input, PageHeader } from '../../ui'
 import { FormError } from '../components/FormError'
+import { OAuthButtons } from '../components/OAuthButtons'
 import { useAuth } from '../../backend/auth/useAuth'
 import { usePageTitle } from '../hooks/usePageTitle'
 
@@ -88,7 +89,15 @@ export default function SignUp() {
     <Container className="py-16">
       <div className="mx-auto max-w-md">
         <PageHeader title="Create account" description="Sign up to join the hackathon." />
-        <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-4" noValidate>
+        <div className="mt-8">
+          <OAuthButtons />
+        </div>
+        <div className="my-6 flex items-center gap-4">
+          <span className="h-px flex-1 bg-border" />
+          <span className="font-mono text-xs uppercase tracking-widest text-muted">or</span>
+          <span className="h-px flex-1 bg-border" />
+        </div>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
           <Input
             label="Email"
             type="email"

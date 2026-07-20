@@ -24,6 +24,22 @@ export async function signOut(): Promise<void> {
   if (error) throw error
 }
 
+export type OAuthProvider = 'google' | 'github'
+
+/**
+ * Starts an OAuth sign in. Supabase redirects the browser to the provider and
+ * back to redirectTo, where AuthProvider picks up the new session. The provider
+ * must be enabled in the Supabase dashboard for this to succeed.
+ */
+export async function signInWithOAuth(provider: OAuthProvider) {
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider,
+    options: { redirectTo: `${window.location.origin}/hackathon` },
+  })
+  if (error) throw error
+  return data
+}
+
 /** Returns the profiles row for a user, or null when it does not exist yet. */
 export async function getProfile(userId: string): Promise<Profile | null> {
   const { data, error } = await supabase

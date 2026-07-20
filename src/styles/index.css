@@ -3,24 +3,40 @@
 @tailwind utilities;
 
 /*
- * Accent color, single source of truth. Swap this one value to rebrand the
- * whole app. tailwind.config.ts maps every accent utility to this variable.
+ * Design tokens. The palette is monochrome plus exactly one accent, and every
+ * value flips between light (:root) and dark (.dark). tailwind.config.ts maps
+ * each color utility to one of these variables, so a rebrand or a theme is a
+ * change here only. Light is the default; the ThemeProvider adds .dark.
  */
 :root {
   --accent: #0070f3;
+  --accent-foreground: #ffffff;
+  --background: #ffffff;
+  --foreground: #0a0a0a;
+  --muted: #666666;
+  --border: #eaeaea;
+  --surface: #fafafa;
+  color-scheme: light;
+}
+
+.dark {
+  --accent: #3b91ff;
+  --accent-foreground: #06121f;
+  --background: #0a0a0a;
+  --foreground: #fafafa;
+  --muted: #a1a1a1;
+  --border: #262626;
+  --surface: #161616;
+  color-scheme: dark;
 }
 
 @layer base {
-  html {
-    /* Light theme only. No dark mode, ever. */
-    color-scheme: light;
-  }
-
   body {
     @apply bg-background text-foreground font-sans antialiased;
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
 
-  /* Global focus visible: a sharp 2px accent ring with a white offset. */
+  /* Global focus visible: a sharp 2px accent ring with a background offset. */
   :focus-visible {
     @apply outline-none ring-2 ring-accent ring-offset-2 ring-offset-background;
   }
